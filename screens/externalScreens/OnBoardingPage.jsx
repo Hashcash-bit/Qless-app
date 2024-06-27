@@ -10,15 +10,13 @@ import {
 } from "react-native";
 //The top bar with the time, battery, etc.
 import { StatusBar } from "react-native";
-//The router module
-import { Link, router } from "expo-router";
 //The safe area view module
 import { SafeAreaView } from "react-native-safe-area-context";
 // Importing the relevant firebase module
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 
-export default function OnBoardingPage() {
+export default function OnBoardingPage({ navigation }) {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
 
@@ -34,14 +32,16 @@ export default function OnBoardingPage() {
 
   const handleRedirect = () => {
     if (user) {
-      router.push("/(tabs)/home");
+      // User is already logged in, navigate to the Internal Stack
+      navigation.navigate("InternalComponents");
       if (user.email && user.uid) {
-        console.log("User is signed in");
-        console.log("User Email: ", user.email);
-        console.log("User UID: ", user.uid);
+        console.log("User Email:", user.email);
+        console.log("User UID:", user.uid);
+        console.log("Status: Logged In");
       }
     } else {
-      router.push("/(auth)/sign-in");
+      // add the google login here
+      navigation.navigate("Tabs");
     }
   };
 
@@ -83,7 +83,8 @@ export default function OnBoardingPage() {
               height: 90,
               width: 159,
             }}
-            source={require("../assets/images/logo.png")}
+            source={require("../../assets/images/logo.png")}
+            // source={require("../assets/images/logo.png")}
           />
           <Image
             style={{
@@ -92,7 +93,7 @@ export default function OnBoardingPage() {
               width: "100%",
               marginTop: 10,
             }}
-            source={require("../assets/images/cards.png")}
+            source={require("../../assets/images/cards.png")}
           />
           <View
             style={{
@@ -140,10 +141,10 @@ export default function OnBoardingPage() {
             {user ? (
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 18,
                   backgroundColor: "#2C9171",
                   textAlign: "center",
-                  padding: 15,
+                  padding: 18,
                   borderRadius: 100,
                   fontWeight: "bold",
                   color: "white",
@@ -152,19 +153,32 @@ export default function OnBoardingPage() {
                 Continue as {email}
               </Text>
             ) : (
-              <Text
+              <View
                 style={{
-                  fontSize: 15,
-                  backgroundColor: "#2C9171",
+                  backgroundColor: "#2C2C2C",
                   textAlign: "center",
-                  paddingVertical: 15,
+                  paddingVertical: 18,
                   borderRadius: 100,
-                  fontWeight: "bold",
-                  color: "white",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  flexDirection: "row",
                 }}
               >
-                Get Started
-              </Text>
+                <Image
+                  style={{ width: 35, height: 35, resizeMode: "contain" }}
+                  source={require("../../assets/icons/google_nobg.png")}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  Continue with Google
+                </Text>
+              </View>
             )}
           </TouchableOpacity>
         </View>

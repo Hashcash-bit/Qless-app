@@ -8,28 +8,19 @@ import Tabs from "./navigation/tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //External Pages
-import Landingpage from "./ExternalScreens/Landingpage";
-import Loginpage from "./ExternalScreens/Loginpage";
-import Signuppage from "./ExternalScreens/Signuppage";
+import OnBoardingPage from "./screens/externalScreens/OnBoardingPage";
 
 //Internal Pages
-import HomeScreen from "./InternalScreens/HomeScreen";
-import ProfileScreen from "./InternalScreens/ProfileScreen";
-import HistoryScreen from "./InternalScreens/HistoryScreen";
-import DocumentScreen from "./InternalScreens/DocumentScreen";
-import SearchScreen from "./InternalScreens/SearchScreen";
+import DashBoard from "./screens/internalScreens/DashBoard";
+import Queue from "./screens/internalScreens/Queue";
+import Profile from "./screens/internalScreens/Profile";
 
 // Import the Status Bar
 import { StatusBar } from "expo-status-bar";
 
-// Toast
-
 // Some firebase import
 import { User, onAuthStateChanged } from "firebase/auth";
-import { firebase_auth } from "./firebase";
-
-// Test Screens
-import LogoutConfirmationScreen from "./InternalScreens/ConfirmLogout/LogoutConfirmationScreen";
+import { auth } from "./firebase";
 
 // Inside Stack and the components
 const InsideStack = createNativeStackNavigator();
@@ -52,7 +43,7 @@ export default App = () => {
 
   // Lets create quick try catch to detect user presence
   useEffect(() => {
-    onAuthStateChanged(firebase_auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
       console.log("user", user);
@@ -70,20 +61,18 @@ export default App = () => {
       >
         {!user ? (
           //User not logged in? Show the external stack
-          <> 
-          {/* This will be testing area */}
-            {/* <Stack.Screen
-              name="/"
+          <>
+            {/* This will be testing area */}
+            <Stack.Screen name="OnBoarding" component={OnBoardingPage} />
+            <Stack.Screen
+              name="Tabs"
               component={Tabs}
               screenOptions={{ headerShown: false }}
-            /> */}
-            <Stack.Screen name="OnBoarding" component={Landingpage} />
-            <Stack.Screen name="LogIn" component={Loginpage} />
-            <Stack.Screen name="SignUp" component={Signuppage} />
+            />
           </>
         ) : (
           <>
-            <Stack.Screen name="OnBoarding" component={Landingpage} />
+            <Stack.Screen name="OnBoarding" component={OnBoardingPage} />
             <Stack.Screen
               name="InternalComponents"
               component={PrivateStack}

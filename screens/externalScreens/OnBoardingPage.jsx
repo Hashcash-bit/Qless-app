@@ -1,5 +1,5 @@
 // Importing the necessary modules
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import {
   Image,
   ScrollView,
@@ -8,60 +8,37 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-//The top bar with the time, battery, etc.
 import { StatusBar } from "react-native";
-//The safe area view module
 import { SafeAreaView } from "react-native-safe-area-context";
-// Importing the relevant firebase module
-import { onAuthStateChanged } from "firebase/auth";
+// Import the AuthSession and Google modules
+import * as AuthSession from "expo-auth-session";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+// Import the firebase modules
+import {
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithCredential,
+  getAuth,
+} from "firebase/auth";
 import { auth } from "../../firebase";
+// Importing the async storage module
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function OnBoardingPage({ navigation }) {
-  const [user, setUser] = useState(null);
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  // Create a state for the users presence
+  const [user, setUser] = React.useState(null);
 
   const handleRedirect = () => {
     if (user) {
-      // User is already logged in, navigate to the Internal Stack
       navigation.navigate("InternalComponents");
-      if (user.email && user.uid) {
-        console.log("User Email:", user.email);
-        console.log("User UID:", user.uid);
-        console.log("Status: Logged In");
-      }
     } else {
-      // add the google login here
-      navigation.navigate("Tabs");
+      // Prompt the user to sign in page
+      navigation.navigate("SignIn");
     }
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      if (user && user.email) {
-        const emailParts = user.email.split("@")[0];
-        const truncatedEmail =
-          emailParts.length > 6 ? emailParts.slice(0, 6) + "..." : emailParts;
-        setEmail(truncatedEmail);
-      } else {
-        setEmail("");
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#1A1A1A" }}>
@@ -84,7 +61,6 @@ export default function OnBoardingPage({ navigation }) {
               width: 159,
             }}
             source={require("../../assets/images/logo.png")}
-            // source={require("../assets/images/logo.png")}
           />
           <Image
             style={{
@@ -142,7 +118,7 @@ export default function OnBoardingPage({ navigation }) {
               <Text
                 style={{
                   fontSize: 18,
-                  backgroundColor: "#2C9171",
+                  backgroundColor: "#2C2C2C",
                   textAlign: "center",
                   padding: 18,
                   borderRadius: 100,
@@ -150,7 +126,7 @@ export default function OnBoardingPage({ navigation }) {
                   color: "white",
                 }}
               >
-                Continue as {email}
+                Continue as {user.email}
               </Text>
             ) : (
               <View

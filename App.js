@@ -9,6 +9,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //External Pages
 import OnBoardingPage from "./screens/externalScreens/OnBoardingPage";
+import SignIn from "./screens/externalScreens/SignIn";
+import SignUp from "./screens/externalScreens/SignUp";
 
 //Internal Pages
 import DashBoard from "./screens/internalScreens/DashBoard";
@@ -63,12 +65,13 @@ export default App = () => {
           //User not logged in? Show the external stack
           <>
             {/* This will be testing area */}
-            <Stack.Screen name="OnBoarding" component={OnBoardingPage} />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="Tabs"
               component={Tabs}
               screenOptions={{ headerShown: false }}
-            />
+            /> */}
+            <Stack.Screen name="OnBoarding" component={OnBoardingPage} />
+            <Stack.Screen name="SignIn" component={SignIn} />
           </>
         ) : (
           <>

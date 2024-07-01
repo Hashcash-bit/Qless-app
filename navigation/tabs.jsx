@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 // Screens
-import DashBoard from "../screens/internalScreens/DashBoard";
+import Home from "../screens/internalScreens/DashBoard";
 import Queue from "../screens/internalScreens/Queue";
 import Profile from "../screens/internalScreens/Profile";
 
@@ -62,8 +62,8 @@ const Tabs = ({ navigation }) => {
       }}
     >
       <Tab.Screen
-        name="Dashboard"
-        component={DashBoard}
+        name="Home"
+        component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

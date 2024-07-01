@@ -1,5 +1,5 @@
 // Importing the necessary modules
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -25,20 +25,51 @@ import { auth } from "../../firebase";
 // Importing the async storage module
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-WebBrowser.maybeCompleteAuthSession();
-
 export default function OnBoardingPage({ navigation }) {
   // Create a state for the users presence
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const handleRedirect = () => {
     if (user) {
       navigation.navigate("InternalComponents");
+      if (user.email && user.uid) {
+        console.log("User is signed in");
+        console.log("User Email: ", user.email);
+        console.log("User UID: ", user.uid);
+      }
     } else {
-      // Prompt the user to sign in page
-      navigation.navigate("SignIn");
+      router.push("SignIn");
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (user && user.email) {
+        const emailParts = user.email.split("@")[0];
+        const truncatedEmail =
+          emailParts.length > 6 ? emailParts.slice(0, 6) + "..." : emailParts;
+        setEmail(truncatedEmail);
+      } else {
+        setEmail("");
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#1A1A1A" }}>

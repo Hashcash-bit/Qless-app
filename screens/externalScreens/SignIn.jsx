@@ -71,7 +71,7 @@ export default function SignIn({ navigation }) {
         );
         setLoading(false);
         ToastAndroid.show("Login Successful", ToastAndroid.SHORT);
-        navigation.navigate("Tabs");
+        navigation.navigate("InternalComponents");
         setErrors({});
       } catch (error) {
         ToastAndroid.show(error.message, ToastAndroid.SHORT);

@@ -49,7 +49,7 @@ export default function OnBoardingPage({ navigation }) {
         console.log("User UID: ", user.uid);
       }
     } else {
-      router.push("SignIn");
+      navigation.navigate("SignIn");
     }
   };
 

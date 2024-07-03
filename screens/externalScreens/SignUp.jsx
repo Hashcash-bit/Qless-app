@@ -21,9 +21,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // The firebase module
 import { auth, db } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 // The icons
 import icons from "../../constants/icons";
-import { doc, setDoc } from "firebase/firestore";
+// Async storage module
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUp({ navigation }) {
   const [fullName, setFullname] = useState("");
@@ -132,7 +134,6 @@ export default function SignUp({ navigation }) {
         ToastAndroid.show(errorMsg, ToastAndroid.SHORT);
       });
     } else {
-      //Try will start here
       try {
         setLoading(true);
         const response = await createUserWithEmailAndPassword(
@@ -141,20 +142,19 @@ export default function SignUp({ navigation }) {
           password
         );
         setLoading(false);
-        // If the response is successful
         ToastAndroid.show("Account created successfully", ToastAndroid.SHORT);
-        // Redirect to the Home Page
-        navigation.navigate("InternalComponents");
-
         const user = auth.currentUser;
         console.log("registered");
 
         if (user) {
           const userRef = doc(db, "users", user.uid);
           await setDoc(userRef, { fullName: fullName });
+          await AsyncStorage.setItem("hasSeenFeatureGuide", "false"); // Ensure that the user sees the guide
         }
         setErrors({});
+        navigation.navigate("FeatureGuide"); // Navigate to FeatureGuide screen
       } catch (error) {
+        setLoading(false);
         ToastAndroid.show(error.message, ToastAndroid.SHORT);
         alert("Registration failed, you may already have an account");
         console.log("registration failed");

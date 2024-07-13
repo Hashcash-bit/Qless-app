@@ -72,7 +72,7 @@ export default function OnBoardingPage({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#1A1A1A" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View
           style={{
@@ -100,7 +100,7 @@ export default function OnBoardingPage({ navigation }) {
               width: "100%",
               marginTop: 10,
             }}
-            source={require("../../assets/images/cards.png")}
+            source={require("../../assets/images/OnBoardingImg.png")}
           />
           <View
             style={{
@@ -111,31 +111,51 @@ export default function OnBoardingPage({ navigation }) {
               flexDirection: "column",
             }}
           >
-            <Text
+            <View
               style={{
-                padding: 10,
-                backgroundColor: "#2C9171",
-                fontWeight: "bold",
-                fontSize: 13,
-                color: "white",
-                borderRadius: 10,
-                width: 100,
-                textAlign: "center",
+                display: "flex",
+                flexDirection: "row",
+                height: 60,
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
               }}
             >
-              Streamline
-            </Text>
+              <Text
+                style={{
+                  padding: 10,
+                  backgroundColor: "#000",
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  color: "white",
+                  borderRadius: 10,
+                  width: 100,
+                  textAlign: "center",
+                  marginTop: 20,
+                }}
+              >
+                Streamline
+              </Text>
+              <Image
+                source={require("../../assets/images/WavyLine.png")}
+                style={{
+                  resizeMode: "contain",
+                  height: "100%",
+                  width: 100,
+                }}
+              />
+            </View>
             <Text
               style={{
                 fontWeight: "bold",
                 fontSize: 43,
-                color: "white",
+                color: "#000",
                 textAlign: "left",
                 letterSpacing: 0,
               }}
             >
               Queue up {""}
-              <Text style={{ color: "#FFA500" }}>Seamlessly</Text>
+              <Text style={{ color: "#2F69FE" }}>Seamlessly</Text>
             </Text>
           </View>
           <TouchableOpacity
@@ -190,7 +210,7 @@ export default function OnBoardingPage({ navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <StatusBar backgroundColor="#1A1A1A" />
+      <StatusBar barStyle={"dark-content"} backgroundColor={"#fff"} />
     </SafeAreaView>
   );
 }

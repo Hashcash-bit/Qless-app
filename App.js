@@ -64,6 +64,7 @@ export default App = () => {
           </>
         ) : (
           <>
+            <Stack.Screen name="OnBoarding" component={OnBoardingPage} />
             <Stack.Screen name="FeatureGuide" component={FeatureGuide} />
             <Stack.Screen
               name="InternalComponents"
